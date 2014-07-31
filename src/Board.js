@@ -256,8 +256,7 @@
      hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var allRows = this.rows();
       var n = allRows[0].length;
-      var colIndex = minorDiagonalColumnIndexAtFirstRow;
-      var maxRowIndex = colIndex;
+      var colIndex, maxRowIndex, row;
       var counter = 0;
 
       if ( minorDiagonalColumnIndexAtFirstRow >= n){
@@ -271,7 +270,7 @@
         row = 0;
       }
 
-      for ( row; row < maxRowIndex; row++ ){
+      for ( row; row <= maxRowIndex; row++ ){
         if (allRows[row][colIndex] === 1 ) ++counter;
 
         //decrement column
