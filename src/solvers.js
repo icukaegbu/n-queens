@@ -14,36 +14,39 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  var solution = new Board(makeZerosMatrix(n)); //fixme
-  var counter = 1;
-
-  //create an Board of nxn
-  //
-  //run through the Board matrix
-  ////for each location, insert a rook
-  ///insert the first rook at [0,0]
-  while( counter <= n ){
-    for ( var rowIndex = 0; rowIndex < n; rowIndex++ ){
-      for (var colIndex = 0; colIndex < n; colIndex++ ){
-        //insert an element at the position
-        // solution[rowIndex][colIndex] = 1;
-        // if ( solution.hasAnyRookConflicts() ) {
-        //   solution[rowIndex][colIndex] = 0;
-        // } 
-        solution.attributes[rowIndex][colIndex] = 1;
-        if ( solution.hasAnyRooksConflicts() ) {
-          solution.attributes[rowIndex][colIndex] = 0;
-        } 
-        else{
-          ++counter;
-        }
-      }
-    }
-
-  }
+  var solution = makeNSolution(n, 'rook');
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution.attributes;
+  return solution;
+  
+  // var solution = new Board(makeZerosMatrix(n)); //fixme
+  // var counter = 1;
+
+  // //create an Board of nxn
+  // //
+  // //run through the Board matrix
+  // ////for each location, insert a rook
+  // ///insert the first rook at [0,0]
+  // while( counter <= n ){
+  //   for ( var rowIndex = 0; rowIndex < n; rowIndex++ ){
+  //     for (var colIndex = 0; colIndex < n; colIndex++ ){
+  //       //insert an element at the position
+  //       // solution[rowIndex][colIndex] = 1;
+  //       // if ( solution.hasAnyRookConflicts() ) {
+  //       //   solution[rowIndex][colIndex] = 0;
+  //       // } 
+  //       solution.attributes[rowIndex][colIndex] = 1;
+  //       if ( solution.hasAnyRooksConflicts() ) {
+  //         solution.attributes[rowIndex][colIndex] = 0;
+  //       } 
+  //       else{
+  //         ++counter;
+  //       }
+  //     }
+  //   }
+
+  // }
+
 };
 
 
@@ -60,7 +63,7 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = makeNSolution(n, 'queens');
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
@@ -89,3 +92,37 @@ window.makeZerosMatrix = function(n) {
 
   return matrix;
 };
+
+window.makeNSolution = function(n, type){
+  var board = new Board(makeZerosMatrix(n)); //fixme
+  var counter = 1, revertOrAdd = false;
+
+  //run through the Board matrix
+  ////for each location, insert a rook
+  ///insert the first rook at [0,0]
+  while( counter <= n ){
+    for ( var rowIndex = 0; rowIndex < n; rowIndex++ ){
+      for (var colIndex = 0; colIndex < n; colIndex++ ){
+        
+        board.attributes[rowIndex][colIndex] = 1;
+
+        if ( type === 'rook') {
+          revertOrAdd = board.hasAnyRooksConflicts();
+        }else if ( type === 'queens'){
+          revertOrAdd = board.hasAnyQueensConflicts();
+        }
+        
+        //if true ie there was conflict, revert
+        if ( revertOrAdd ) {
+          board.attributes[rowIndex][colIndex] = 0;
+        } 
+        else{
+          ++counter;
+        }
+      }
+    }
+
+  }
+
+  return board.attributes;
+}
