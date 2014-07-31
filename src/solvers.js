@@ -14,26 +14,36 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  // var solution = new Board({'n': n}); //fixme
+  var solution = new Board(makeZerosMatrix(n)); //fixme
+  var counter = 1;
 
-  // //create an Board of nxn
-  // //
-  // //run through the Board matrix
-  // ////for each location, insert a rook
-  // ///insert the first rook at [0,0]
-  // for ( var rowIndex = 0; rowIndex < n; rowIndex++ ){
-  //   for (var colIndex = 0; colIndex < n; colIndex++ ){
-  //     //insert an element at the position
-  //     solution[rowIndex][colIndex] = 1;
-  //     if ( solution.hasAnyRookConflicts() ) solution[rowIndex][colIndex] = 0;
-  //   }
-  // }
-  ///////if it does not have a row or colum conflict, leave the item in that location
-  ///////if it returns a conflict, remove the item
-  var solution = undefined;
-  
+  //create an Board of nxn
+  //
+  //run through the Board matrix
+  ////for each location, insert a rook
+  ///insert the first rook at [0,0]
+  while( counter <= n ){
+    for ( var rowIndex = 0; rowIndex < n; rowIndex++ ){
+      for (var colIndex = 0; colIndex < n; colIndex++ ){
+        //insert an element at the position
+        // solution[rowIndex][colIndex] = 1;
+        // if ( solution.hasAnyRookConflicts() ) {
+        //   solution[rowIndex][colIndex] = 0;
+        // } 
+        solution.attributes[rowIndex][colIndex] = 1;
+        if ( solution.hasAnyRooksConflicts() ) {
+          solution.attributes[rowIndex][colIndex] = 0;
+        } 
+        else{
+          ++counter;
+        }
+      }
+    }
+
+  }
+
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  return solution.attributes;
 };
 
 
@@ -66,11 +76,16 @@ window.countNQueensSolutions = function(n) {
 };
 
 
-// //helper function
-// window.makeEmptyMatrix = function(n) {
-//   return _(_.range(n)).map(function() {
-//     return _(_.range(n)).map(function() {
-//       return 0;
-//     });
-//   });
-// };
+//helper function
+window.makeZerosMatrix = function(n) {
+  var matrix = [];
+  for( var i = 0; i < n; i++ ){
+    var innerMatrix = [];
+    for ( var j = 0; j < n; j++ ){
+      innerMatrix[j] = 0;
+    }
+    matrix[i] = innerMatrix;
+  }
+
+  return matrix;
+};

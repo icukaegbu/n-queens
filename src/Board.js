@@ -260,7 +260,7 @@
       var counter = 0;
 
       if ( minorDiagonalColumnIndexAtFirstRow >= n){
-        maxRowIndex = n;
+        maxRowIndex = n-1;
         row = (minorDiagonalColumnIndexAtFirstRow - n) + 1;
         colIndex = n - 1;
       }
